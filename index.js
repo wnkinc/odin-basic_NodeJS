@@ -32,6 +32,11 @@ const server = http.createServer((req, res) => {
     req.url === "/" ? "index.html" : req.url
   );
 
+  // If no file extension is provided, default to .html
+  if (!path.extname(filePath)) {
+    filePath += ".html";
+  }
+
   // extension of file
   let extname = path.extname(filePath);
 
@@ -51,7 +56,7 @@ const server = http.createServer((req, res) => {
   // read file
   fs.readFile(filePath, (err, content) => {
     if (err) {
-      if (err.code == "ENONET") {
+      if (err.code == "ENOENT") {
         // page not found
         fs.readFile(
           path.join(__dirname, "public", "404.html"),
@@ -73,6 +78,6 @@ const server = http.createServer((req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 8080;
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
