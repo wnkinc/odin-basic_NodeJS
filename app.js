@@ -5,16 +5,39 @@ const authorRouter = require("./routes/authorRouter");
 const bookRouter = require("./routes/bookRouter");
 // const indexRouter = require("./routes/indexRouter");
 
+const assetsPath = path.join(__dirname, "public");
+app.use(express.static(assetsPath));
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+// app.get("/", (req, res) => {
+//   res.render("index", { message: "EJS rocks!" });
+// });
+
+// app.js
+const links = [
+  { href: "/", text: "Home" },
+  { href: "about", text: "About" },
+];
+const users = ["Rose", "Cakje", "Biff"];
+app.get("/", (req, res) => {
+  res.render("index", { links: links, users: users });
+});
+app.get("/about", (req, res) => {
+  res.render("about", { links: links, users: users, message: "About page" });
+});
+
 app.use("/authors", authorRouter);
 app.use("/books", bookRouter);
 // app.use("/", indexRouter);
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-app.get("/about", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "about.html"));
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "public", "index.html"));
+// });
+
+// app.get("/about", (req, res) => {
+//   res.sendFile(path.join(__dirname, "public", "about.html"));
+// });
 app.get("/contact-me", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "contact-me.html"));
 });
